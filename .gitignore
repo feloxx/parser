@@ -5,3 +5,4 @@ y.go
 go.mod
 go.sum
 coverage.txt
+.DS_Store

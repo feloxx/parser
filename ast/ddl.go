@@ -816,6 +816,8 @@ type CreateTableStmt struct {
 	Partition   *PartitionOptions
 	OnDuplicate OnDuplicateKeyHandlingType
 	Select      ResultSetNode
+
+	SelectStmt *SelectStmt
 }
 
 // Restore implements Node interface.
@@ -908,6 +910,12 @@ func (n *CreateTableStmt) Accept(v Visitor) (Node, bool) {
 			return n, false
 		}
 		n.ReferTable = node.(*TableName)
+	}
+	if n.SelectStmt != nil {
+		_, ok = n.SelectStmt.Accept(v)
+		if !ok {
+			return n, false
+		}
 	}
 	for i, val := range n.Cols {
 		node, ok = val.Accept(v)
